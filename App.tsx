@@ -42,12 +42,12 @@ const App: React.FC = () => {
   const steps = ["Policy Setup", "Add Members", "Premiums", "Review", "Generate"];
 
   return (
-    <div className="bg-gray-50 min-h-screen font-sans text-gray-800">
+    <div className="bg-gray-50 min-h-screen font-sans text-gray-800 overflow-x-hidden">
       <Header onNewQuotation={resetQuotation} />
-      <main className="container mx-auto p-2 sm:p-4 lg:p-8">
-        <div className="max-w-5xl mx-auto">
+      <main className="container mx-auto p-2 sm:p-4 lg:p-8 max-w-full">
+        <div className="max-w-5xl mx-auto w-full">
           {step < 5 && <StepIndicator steps={steps} currentStep={step} />}
-          <div className="mt-4 sm:mt-8 bg-white p-4 sm:p-6 lg:p-8 rounded-xl sm:rounded-2xl shadow-lg transition-all duration-300">
+          <div className="mt-4 sm:mt-8 bg-white p-4 sm:p-6 lg:p-8 rounded-xl sm:rounded-2xl shadow-lg transition-all duration-300 w-full">
             {renderStep()}
           </div>
         </div>

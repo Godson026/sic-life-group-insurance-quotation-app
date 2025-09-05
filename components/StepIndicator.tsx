@@ -8,10 +8,10 @@ interface StepIndicatorProps {
 
 export const StepIndicator: React.FC<StepIndicatorProps> = ({ steps, currentStep }) => {
   return (
-    <nav aria-label="Progress" className="overflow-x-auto">
-      <ol role="list" className="flex items-center min-w-max px-2">
+    <nav aria-label="Progress" className="overflow-x-auto scrollbar-hide">
+      <ol role="list" className="flex items-center min-w-max px-2 w-full justify-between sm:justify-start">
         {steps.map((step, stepIdx) => (
-          <li key={step} className={`relative flex-shrink-0 ${stepIdx !== steps.length - 1 ? 'pr-4 sm:pr-8 md:pr-20' : ''}`}>
+          <li key={step} className={`relative flex-shrink-0 ${stepIdx !== steps.length - 1 ? 'pr-2 sm:pr-4 md:pr-8 lg:pr-20' : ''}`}>
             {stepIdx < currentStep - 1 ? (
               <>
                 <div className="absolute inset-0 flex items-center" aria-hidden="true">

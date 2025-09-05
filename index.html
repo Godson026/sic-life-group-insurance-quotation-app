@@ -43,6 +43,39 @@
           margin: 0 !important;
         }
       }
+      
+      /* Hide scrollbars for mobile */
+      .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+      }
+      
+      /* Prevent horizontal overflow */
+      * {
+        box-sizing: border-box;
+      }
+      
+      /* Mobile-specific improvements */
+      @media (max-width: 640px) {
+        body {
+          overflow-x: hidden;
+        }
+        
+        .container {
+          padding-left: 1rem;
+          padding-right: 1rem;
+        }
+        
+        /* Ensure tooltips don't cause overflow */
+        .tooltip-container {
+          position: fixed !important;
+          z-index: 9999 !important;
+          max-width: calc(100vw - 2rem) !important;
+        }
+      }
     </style>
   <script type="importmap">
 {

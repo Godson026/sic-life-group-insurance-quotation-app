@@ -68,14 +68,14 @@ export const PolicySetup: React.FC<PolicySetupProps> = ({ data, setData, nextSte
         
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">Sum Assured (GH₵)</label>
-          <div className="flex flex-wrap items-center gap-2 sm:gap-4">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-4 w-full">
             {SUM_ASSURED_OPTIONS.map(option => (
-              <button key={option} type="button" onClick={() => handleSumAssuredChange(option)} className={`px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm rounded-lg border-2 transition-colors duration-200 min-h-[44px] touch-manipulation ${!isCustom && policyDetails.sumAssured === option ? 'bg-sic-green text-white border-sic-green' : 'bg-white text-gray-700 border-gray-300 hover:border-sic-green hover:bg-sic-green/5'}`}>
+              <button key={option} type="button" onClick={() => handleSumAssuredChange(option)} className={`flex-1 sm:flex-none px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm rounded-lg border-2 transition-colors duration-200 min-h-[44px] touch-manipulation ${!isCustom && policyDetails.sumAssured === option ? 'bg-sic-green text-white border-sic-green' : 'bg-white text-gray-700 border-gray-300 hover:border-sic-green hover:bg-sic-green/5'}`}>
                 {option.toLocaleString()}
               </button>
             ))}
-            <div className="relative">
-              <input type="number" placeholder="Custom Amount" value={isCustom ? customSumAssured : ''} onChange={handleCustomSumAssuredChange} className="w-32 sm:w-40 px-3 sm:px-4 py-2 sm:py-2.5 text-gray-900 bg-white border border-gray-300 rounded-lg shadow-sm placeholder:text-gray-400 transition-all duration-200 ease-in-out hover:border-sic-green focus:outline-none focus:ring-2 focus:ring-sic-lime/70 focus:border-sic-green text-base sm:text-sm min-h-[44px] touch-manipulation" />
+            <div className="relative flex-1 sm:flex-none min-w-0">
+              <input type="number" placeholder="Custom Amount" value={isCustom ? customSumAssured : ''} onChange={handleCustomSumAssuredChange} className="w-full px-3 sm:px-4 py-2 sm:py-2.5 text-gray-900 bg-white border border-gray-300 rounded-lg shadow-sm placeholder:text-gray-400 transition-all duration-200 ease-in-out hover:border-sic-green focus:outline-none focus:ring-2 focus:ring-sic-lime/70 focus:border-sic-green text-base sm:text-sm min-h-[44px] touch-manipulation" />
             </div>
           </div>
         </div>
@@ -86,7 +86,7 @@ export const PolicySetup: React.FC<PolicySetupProps> = ({ data, setData, nextSte
             {AVAILABLE_RIDERS.map(rider => (
               <div 
                 key={rider.id} 
-                className={`p-3 sm:p-4 border rounded-lg flex items-start space-x-3 sm:space-x-4 transition-all duration-200 ${selectedRiders.has(rider.id) ? 'border-sic-green bg-sic-lime/10' : 'border-gray-200 bg-white'} ${rider.id !== RiderId.GROUP_LIFE ? 'hover:shadow-md hover:border-sic-green' : ''}`}
+                className={`p-3 sm:p-4 border rounded-lg flex items-start space-x-3 sm:space-x-4 transition-all duration-200 w-full ${selectedRiders.has(rider.id) ? 'border-sic-green bg-sic-lime/10' : 'border-gray-200 bg-white'} ${rider.id !== RiderId.GROUP_LIFE ? 'hover:shadow-md hover:border-sic-green' : ''}`}
               >
                   <input 
                       id={rider.id}
@@ -96,12 +96,12 @@ export const PolicySetup: React.FC<PolicySetupProps> = ({ data, setData, nextSte
                       onChange={() => handleRiderToggle(rider.id)}
                       disabled={rider.id === RiderId.GROUP_LIFE}
                   />
-                  <div className="flex-1 min-w-0">
+                  <div className="flex-1 min-w-0 w-full">
                       <label htmlFor={rider.id} className={`font-semibold text-gray-800 block text-sm sm:text-base ${rider.id !== RiderId.GROUP_LIFE ? 'cursor-pointer' : 'cursor-default'}`}>
                           {rider.name}
                       </label>
-                      <div className="flex items-start mt-1">
-                          <label htmlFor={rider.id} className={`text-xs sm:text-sm text-gray-600 mr-2 flex-1 ${rider.id !== RiderId.GROUP_LIFE ? 'cursor-pointer' : 'cursor-default'}`}>
+                      <div className="flex items-start mt-1 w-full">
+                          <label htmlFor={rider.id} className={`text-xs sm:text-sm text-gray-600 mr-2 flex-1 min-w-0 ${rider.id !== RiderId.GROUP_LIFE ? 'cursor-pointer' : 'cursor-default'}`}>
                               {rider.description}
                           </label>
                           <Tooltip text={rider.details}>
