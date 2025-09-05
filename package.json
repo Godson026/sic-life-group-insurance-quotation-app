@@ -1,0 +1,25 @@
+{
+  "name": "sic-life-group-insurance-quotation-app",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "SIC Life Group Business Quote Generator - Professional Insurance Solutions",
+  "keywords": ["insurance", "quotation", "group", "business", "sic-life"],
+  "author": "SIC Life Insurance Ltd.",
+  "homepage": "https://sic-life-quotation.vercel.app",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "vercel-build": "vite build"
+  },
+  "dependencies": {
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "typescript": "~5.8.2",
+    "vite": "^6.2.0"
+  }
+}

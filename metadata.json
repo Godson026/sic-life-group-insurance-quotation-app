@@ -1,0 +1,5 @@
+{
+  "name": "SIC Life Group Insurance Quotation App",
+  "description": "A web application for SIC Life sales staff to generate group insurance premium quotations, select policy riders, manage group members, and produce branded quotation documents.",
+  "requestFramePermissions": []
+}
