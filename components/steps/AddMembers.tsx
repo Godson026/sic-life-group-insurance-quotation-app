@@ -25,9 +25,42 @@ const calculateAge = (dob: string): number => {
 export const AddMembers: React.FC<AddMembersProps> = ({ data, setData, nextStep, prevStep }) => {
   const [newMember, setNewMember] = useState({ fullName: '', dob: '', employeeId: '' });
   const [error, setError] = useState('');
+  const [dobInputType, setDobInputType] = useState<'date' | 'text'>('date');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewMember({ ...newMember, [e.target.name]: e.target.value });
+  };
+
+  const handleDobTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value;
+    
+    // Auto-format as user types (DD/MM/YYYY)
+    if (value.length === 2 && !value.includes('/')) {
+      value = value + '/';
+    } else if (value.length === 5 && value.charAt(2) === '/' && !value.substring(3).includes('/')) {
+      value = value + '/';
+    }
+    
+    // Limit to DD/MM/YYYY format
+    if (value.length > 10) {
+      value = value.substring(0, 10);
+    }
+    
+    setNewMember({ ...newMember, dob: value });
+  };
+
+  const convertTextDobToDate = (textDob: string): string => {
+    // Convert DD/MM/YYYY to YYYY-MM-DD for date input
+    if (textDob.length === 10 && textDob.includes('/')) {
+      const parts = textDob.split('/');
+      if (parts.length === 3) {
+        const day = parts[0].padStart(2, '0');
+        const month = parts[1].padStart(2, '0');
+        const year = parts[2];
+        return `${year}-${month}-${day}`;
+      }
+    }
+    return textDob;
   };
 
   const addMember = () => {
@@ -35,16 +68,29 @@ export const AddMembers: React.FC<AddMembersProps> = ({ data, setData, nextStep,
       setError('Full Name and Date of Birth are required.');
       return;
     }
-    const age = calculateAge(newMember.dob);
+    
+    // Convert text DOB to date format for age calculation
+    const dobForCalculation = dobInputType === 'text' ? convertTextDobToDate(newMember.dob) : newMember.dob;
+    const age = calculateAge(dobForCalculation);
+    
     if (isNaN(age) || age < 18 || age > 65) {
         setError('Member must be between 18 and 65 years old.');
         return;
     }
     
+    // Validate text DOB format
+    if (dobInputType === 'text') {
+      const dobRegex = /^\d{2}\/\d{2}\/\d{4}$/;
+      if (!dobRegex.test(newMember.dob)) {
+        setError('Please enter date in DD/MM/YYYY format.');
+        return;
+      }
+    }
+    
     const member: Member = {
       id: Date.now().toString(),
       fullName: newMember.fullName,
-      dob: newMember.dob,
+      dob: dobForCalculation, // Store in YYYY-MM-DD format
       age: age,
       employeeId: newMember.employeeId,
     };
@@ -75,11 +121,72 @@ export const AddMembers: React.FC<AddMembersProps> = ({ data, setData, nextStep,
 
       <div className="mb-6 sm:mb-8">
         <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-4 border-b pb-2">Or Add Manually</h3>
+        
+        {/* Mobile DOB Input Toggle */}
+        <div className="mb-4 sm:hidden">
+          <div className="flex items-center space-x-4">
+            <span className="text-sm font-medium text-gray-700">Date of Birth Input:</span>
+            <div className="flex bg-gray-100 rounded-lg p-1">
+              <button
+                type="button"
+                onClick={() => setDobInputType('date')}
+                className={`px-3 py-1 text-xs rounded-md transition-colors ${
+                  dobInputType === 'date' 
+                    ? 'bg-sic-green text-white' 
+                    : 'text-gray-600 hover:text-gray-800'
+                }`}
+              >
+                Date Picker
+              </button>
+              <button
+                type="button"
+                onClick={() => setDobInputType('text')}
+                className={`px-3 py-1 text-xs rounded-md transition-colors ${
+                  dobInputType === 'text' 
+                    ? 'bg-sic-green text-white' 
+                    : 'text-gray-600 hover:text-gray-800'
+                }`}
+              >
+                Type (DD/MM/YYYY)
+              </button>
+            </div>
+          </div>
+        </div>
+        
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
           <div className="sm:col-span-2">
             <Input id="fullName" label="Full Name" name="fullName" value={newMember.fullName} onChange={handleInputChange} />
           </div>
-          <Input id="dob" label="Date of Birth" name="dob" type="date" value={newMember.dob} onChange={handleInputChange} />
+          
+          {/* DOB Input - Responsive */}
+          <div className="sm:col-span-1">
+            {dobInputType === 'date' ? (
+              <Input 
+                id="dob" 
+                label="Date of Birth" 
+                name="dob" 
+                type="date" 
+                value={newMember.dob} 
+                onChange={handleInputChange} 
+              />
+            ) : (
+              <div>
+                <label htmlFor="dob-text" className="block text-sm font-medium text-gray-700 mb-1">
+                  Date of Birth (DD/MM/YYYY)
+                </label>
+                <input
+                  id="dob-text"
+                  name="dob"
+                  type="text"
+                  placeholder="DD/MM/YYYY"
+                  value={newMember.dob}
+                  onChange={handleDobTextChange}
+                  className="block w-full px-4 py-3 text-gray-900 bg-white border border-gray-300 rounded-lg shadow-sm placeholder:text-gray-400 transition-all duration-200 ease-in-out hover:border-sic-green focus:outline-none focus:ring-2 focus:ring-sic-lime/70 focus:border-sic-green text-base min-h-[44px] touch-manipulation"
+                />
+              </div>
+            )}
+          </div>
+          
           <Button onClick={addMember} variant="secondary" className="w-full sm:w-auto">Add Member</Button>
         </div>
         {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
